@@ -1,0 +1,14 @@
+{% if template_args %}
+template<{{template_args}}>
+{% endif %}
+class {% if ns %}{{ns}}::{% endif %}{{name}}{% if parent %} : public {{parent}}{% endif %}
+{
+public:
+    {% if parent %}typedef {{parent}} TBase;{% endif %}
+
+    {{name}}({% if args %}{{args}}{% endif %})
+    {% if parent %} : {{parent}}{% if parent_args %}({{parent_args}}){% endif %}{% endif %} {}
+    virtual ~{{name}}() {}
+
+    {% include "$$0.jinja2" %}
+};
