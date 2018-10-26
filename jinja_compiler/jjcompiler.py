@@ -20,6 +20,7 @@ import re
 import sys
 import tempfile
 import shutil
+import codecs
 
 import jinja2
 from jinja2 import ChoiceLoader
@@ -106,6 +107,8 @@ def create_env(options, loaders):
 def compile_jinja(options):
     if not isinstance(options, JJCoplilerOptions):
         options = JJCoplilerOptions(**options)
+    
+    encoding = options.get(r'encoding', r'utf-8')
 
     r''' check input '''
     if options.template == None or len(options.template) < 1:
@@ -193,7 +196,7 @@ def compile_jinja(options):
         if options.var == None:
             os.makedirs(temp_files)
             for tpl in dict_tpls.keys():
-                with open(os.path.join(temp_files, tpl), 'w') as f:
+                with codecs.open(os.path.join(temp_files, tpl), r'w', encoding=encoding) as f:
                     f.write(dict_tpls[tpl])
             filter_func = make_filter(temp_file, templateEnv, temp_files, options[r'file-extension'], is_rewrite, not options[r'no-pyc'])
             templateEnv.compile_templates(temp_file, extensions=None,
@@ -214,7 +217,7 @@ def compile_jinja(options):
             if out_file == None:
                 return template.render(props)
             else:
-                with open(temp_file, r'w') as f:
+                with codecs.open(temp_file, r'w', encoding=encoding) as f:
                     f.write(template.render(props))
     except Exception as e:
         print(str(e))

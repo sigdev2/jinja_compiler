@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-''' Copyright 2018, SigDev
+r''' Copyright 2018, SigDev
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -17,16 +17,16 @@
 
 from .jjcompiler import *
 
-__author__ = 'SigDev'
-__authors__ = 'SigDev'
-__contact__ = ''
-__copyright__ = 'Copyright 2018, SigDev'
+__author__ = r'SigDev'
+__authors__ = r'SigDev'
+__contact__ = r''
+__copyright__ = r'Copyright 2018, SigDev'
 __credits__ = []
-__license__ = 'Apache License 2.0'
-__version__ = '0.1.0a0'
-__revision__ = '1'
-__maintainer__ = 'SigDev'
-__email__ = ''
-__status__ = 'Alpha'
-__date__ = '11.10.2018'
-__all__ = ['compile_jinja', 'create_env', 'load_precompiled']
+__license__ = r'Apache License 2.0'
+__version__ = r'0.1.0a0'
+__revision__ = r'1'
+__maintainer__ = r'SigDev'
+__email__ = r''
+__status__ = r'Alpha'
+__date__ = r'11.10.2018'
+__all__ = [r'compile_jinja', r'create_env', r'load_precompiled']
