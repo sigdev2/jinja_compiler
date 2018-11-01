@@ -185,7 +185,7 @@ def main(args):
     parser.add_argument(r'--no-auto-reload', r'-nr', nargs=r'?', type=bool, default=False, help=r'Disable Jinja2 auto reload template. Some loaders load templates from locations where the template sources may change (ie: file system or database)')
     parser.add_argument(r'--async', r'-as', nargs=r'?', type=bool, default=False, help=r'If set to true this enables async template execution which allows you to take advantage of newer Python features. This requires Python 3.6 or later')
     
-    parser.add_argument(r'--version', r'-v', action=r'version', version='%(prog) ' +  __version__)
+    parser.add_argument(r'--version', r'-v', action=r'version', version=r'%(prog) ' +  __version__)
 
     options = parser.parse_args(args)
 
