@@ -24,7 +24,7 @@ import jinja_compiler
 
 
 vars_list = {
-        r'templat_args': r'typename T',
+        r'template_args': r'typename T',
         r'ns' : r'ParentParentNS::ParentNS',
         r'name' : r'MyClass',
         r'parent' : r'ParentClass<T>',

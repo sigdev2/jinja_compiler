@@ -36,7 +36,7 @@ class JJCoplilerOptions:
             return self.__dict__[key]
         return None
     def get(self, key, d):
-        if key in self.__dict__:
+        if key in self.__dict__ and self.__dict__[key] != None:
             return self.__dict__[key]
         return d
 
@@ -102,7 +102,7 @@ def create_env(options, loaders):
         enable_async = options.get(r'async', False)
 	)
 
-    return jinja2.Environment(loader=loaders, extensions=options.ext, **env_options)
+    return jinja2.Environment(loader=loaders, extensions=options.get(r'ext', []), **env_options)
 
 def compile_jinja(options):
     if not isinstance(options, JJCoplilerOptions):
@@ -138,7 +138,7 @@ def compile_jinja(options):
     
     r''' consulidate template includes'''
     n = 0
-    for t in options.include:
+    for t in options.get(r'include', []):
         if isinstance(t, list):
             for tpl_file in t:
                 tpl_file = convertPath(os.path.abspath(tpl_file))
@@ -168,7 +168,7 @@ def compile_jinja(options):
     r''' force rewrite '''
     is_zip = options.zip and options.var == None
     is_single = is_zip or options.var != None
-    is_rewrite = options.force
+    is_rewrite = options.get(r'force', False)
     out_file = options.out
     if out_file == None:
         is_rewrite = True
@@ -194,14 +194,20 @@ def compile_jinja(options):
     r''' compile '''
     try:
         if options.var == None:
-            os.makedirs(temp_files)
-            for tpl in dict_tpls.keys():
-                with codecs.open(os.path.join(temp_files, tpl), r'w', encoding=encoding) as f:
-                    f.write(dict_tpls[tpl])
-            filter_func = make_filter(temp_file, templateEnv, temp_files, options[r'file-extension'], is_rewrite, not options[r'no-pyc'])
-            templateEnv.compile_templates(temp_file, extensions=None,
-                filter_func=filter_func, zip=(options.zip if options.zip else None), ignore_errors=False, py_compile=not options[r'no-pyc'])
-            shutil.rmtree(temp_files)
+            if options.out != None:
+                os.makedirs(temp_files)
+                for tpl in dict_tpls.keys():
+                    with codecs.open(os.path.join(temp_files, tpl), r'w', encoding=encoding) as f:
+                        f.write(dict_tpls[tpl])
+                exts = options.get(r'file-extension', [])
+                if not isinstance(exts, list):
+                    exts = [exts]
+                filter_func = make_filter(temp_file, templateEnv, temp_files, exts, is_rewrite, not options[r'no-pyc'])
+                templateEnv.compile_templates(temp_file, extensions=None,
+                    filter_func=filter_func, zip=(options.zip if options.zip else None), ignore_errors=False, py_compile=not options[r'no-pyc'])
+                shutil.rmtree(temp_files)
+            else:
+                print(r'No input file')
         else:
             props = {}
             for var_set in options.var:
@@ -221,7 +227,7 @@ def compile_jinja(options):
                     f.write(template.render(props))
     except Exception as e:
         print(str(e))
-        if os.path.exists(temp_file):
+        if temp_file != None and os.path.exists(temp_file):
             if is_single:
                 os.remove(temp_file)
             else:
