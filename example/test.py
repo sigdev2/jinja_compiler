@@ -18,7 +18,6 @@ r''' Copyright 2018, SigDev
 import os
 import sys
 sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), r'..')))
-import jinja_compiler
 from jinja_compiler.__main__ import main
 
 if __name__ == r'__main__':
